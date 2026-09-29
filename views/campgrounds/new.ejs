@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/app.css">
+    <title>Yelp-Camp</title>
+</head>
+<body>
+    <%- include("../partials/navbar")%>
+    <main class="new-campground-page">
+        <div class="new-campground-card">
+            <h1 class="new-campground-title">Add New Campground</h1>
+            <form class="campground-form" action="/campground" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                   <label for="title">Title</label>
+                    <input id="title" type="text" name="title" placeholder="Enter campground title" required>
+                </div>
+                <div class="form-group">
+                    <label for="price">Price</label>
+                    <input id="price" type="number" name="price" placeholder="Enter price per night"  min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" placeholder="Enter campground description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input id="location" type="text" name="location" placeholder="Enter campground location" required >
+                </div>
+                <div class="form-group">
+                    <label for="image">Campground Images</label>
+                    <input id="image" type="file" name="image" multiple required>
+                </div>
+                <button class="submit-campground" type="submit">
+                    Add Campground
+                </button>
+            </form>
+        </div>
+    </main>
+    <%- include("../partials/footer")%>
+</body>
+</html>
+

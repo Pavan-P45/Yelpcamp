@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yelp-camp</title>
+    <link rel="stylesheet" href="/stylesheets/app.css">
+</head>
+<body>
+    <%- include("../partials/navbar")%>
+    <main class="edit-campground-page">
+        <div class="edit-campground-card">
+            <h1 class="edit-campground-title">Edit Campground</h1>
+        <form class="campground-form" action="/campground/<%=campground._id%>?_method=PUT" method="POST" enctype="multipart/form-data">
+       <div class="form-group">
+         <label for="title">Title</label>
+    <input id="title" type="text" name="title" placeholder="Enter Title" value="<%=campground.title%>" required>
+    </div>
+    <div class="form-group">
+    <label for="price">Price</label>
+    <input id="price" type="number" name="price" placeholder="Enter Price" value="<%=campground.price%>" min="0" required>
+    </div>
+  <div class="form-group">
+    <label for="description">Description</label>
+    <textarea id="description" name="description" placeholder="Enter description"  required><%=campground.description%></textarea>
+  </div>
+   <div class="form-group">
+    <label for="location">Location</label>
+    <input id="location" type="text" name="location" placeholder="Enter Location" value="<%=campground.location%>" required>
+    </div>
+        <h2 class="existing-images-title">Existing Images</h2>
+        <% for(let image of campground.images) { %>
+            <div class="existing-image">
+    <img class="edit-image" src="<%= image.url %>" alt="Campground Image">
+    <label class="delete-image">
+        <input type="checkbox" name="deleteImages" value="<%= image.filename %>">
+        Delete this image
+    </label>
+    </div>
+        <% } %>
+        <div class="form-group">
+      <label for="image">Add New Images</label>
+       <input id="image" type="file" name="image" multiple>
+    </div>
+        <button class="submit-campground" type="submit">
+        Save Changes</button>
+    </form>
+    </div>
+    </main>
+    <%- include("../partials/footer")%>
+</body>
+</html>

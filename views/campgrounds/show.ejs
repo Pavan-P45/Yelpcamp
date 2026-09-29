@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="/stylesheets/app.css">
+    
+    <title>Yelp-camp</title>
+</head>
+<body>
+    <%- include("../partials/navbar")%>
+    <%- include("../partials/flash")%>
+    <main class="show-page">
+        <h1 class="show-title">
+            <%=campground.title%>
+        </h1>
+        <div class="show-main">
+            <div class="show-content">
+                <% if(campground.images && campground.images.length > 0) { %>
+                    <div class="show-images">
+                        <% for(let image of campground.images) { %>
+                            <img class="show-image" src="<%= image.url %>" alt="<%= campground.title %>">
+                        <% } %>
+                    </div>
+                <% } %>
+                <div class="show-description">
+                    <h2>Description</h2>
+                    <p>
+                        <%=campground.description%>
+                    </p>
+                </div>
+                <div class="show-details">
+                    <div>
+                        <strong>Location</strong>
+                        <span><%=campground.location%></span>
+                    </div>
+                    <div>
+                        <strong>Price</strong>
+                        <span>₹<%=campground.price%> / night</span>
+                    </div>
+                    <div>
+                        <strong>Created By</strong>
+                        <span><%=campground.author.name%></span>
+                    </div>
+                </div>
+            </div>
+            <div class="show-map">
+                <div
+    id="map"
+    data-coordinates="<%= JSON.stringify(campground.geometry.coordinates) %>"
+    data-title="<%= campground.title %>"
+    data-location="<%= campground.location %>"
+></div>
+            </div>
+        </div>
+        <section class="show-reviews">
+            <h2>Reviews</h2>
+            <% for(let review of campground.reviews) { %>
+                <div class="show-review">
+                    <p class="show-review-text">
+                        <%=review.body%>
+                    </p>
+                    <div class="show-review-rating">
+                        <% for(let n = 1; n <= 5; n++) { %>
+                            <% if(n <= Math.floor(review.rating)) { %>
+                                <span class="star">★</span>
+                            <% } else if(
+                                n === Math.ceil(review.rating) &&
+                                review.rating % 1 !== 0
+                            ) { %>
+                                <span class="star half-star">★</span>
+                            <% } else { %>
+                                <span class="empty-star">☆</span>
+                            <% } %>
+                        <% } %>
+                    </div>
+                    <form action="/campground/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE" method="POST">
+                        <button class="delete-review" type="submit"> Delete Review </button>
+                    </form>
+                </div>
+            <% } %>
+        </section>
+        <section class="review-form-section">
+            <h2>Add a Review</h2>
+            <form class="review-form" action="/campground/<%=campground._id%>/reviews" method="POST">
+                <label for="review"> Review </label>
+                <textarea  id="review" name="body" placeholder="Enter your review" required ></textarea>
+                <label for="rating">Rating</label>
+                <input id="rating" type="number" name="rating" min="0.5" max="5" step="0.5" placeholder="Rate the campground" required>
+                <button class="submit-review" type="submit">
+                    Submit Review
+                </button>
+            </form>
+        </section>
+        <section class="campground-actions">
+            <a class="edit-campground" href="/campground/<%=campground._id%>/edit">Edit Campground</a>
+            <form action="/campground/<%=campground._id%>?_method=DELETE" method="POST">
+                <button class="delete-campground" type="submit">
+                    Delete Campground
+                </button>
+            </form>
+        </section>
+    </main>
+    <%- include("../partials/footer")%>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+ const CARTO_MAP_KEY = "<%= process.env.CARTO_MAP_KEY %>";
+</script>
+
+<script src="/javascript/show.js"></script>
+</body>
+</html>

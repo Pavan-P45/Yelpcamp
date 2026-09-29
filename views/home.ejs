@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YelpCamp</title>
+    <link rel="stylesheet" href="/stylesheets/app.css">
+</head>
+
+<body>
+    <%- include("./partials/navbar")%>
+    <main class="home-page">
+        <section class="home-hero">
+            <div class="home-content">
+                <p class="home-label">
+                    WELCOME TO YELPCAMP
+                </p>
+                <h1 class="home-title">
+                    Find Your Perfect Campground
+                </h1>
+                <p class="home-description">
+                    Discover beautiful campgrounds, explore new places,
+                    and share your camping experiences with others.
+                </p>
+                <div class="home-actions">
+                    <a class="home-primary-button" href="/campground" >
+                        Explore Campgrounds
+                    </a>
+                    <% if (!currentUser) { %>
+                        <a class="home-secondary-button" href="/user/register">
+                            Create Account
+                        </a>
+                    <% } %>
+                </div>
+            </div>
+        </section>
+    </main>
+    <%- include("./partials/footer")%>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/stylesheets/app.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
+    <title>Yelp-Camp</title>
+</head>
+<body>
+    <%- include("../partials/navbar")%>
+    <%- include("../partials/flash")%>
+
+    <main class="campgrounds-page">
+    <section class="campgrounds-header">
+        <h1 class="campground-list-title">
+            Explore Campgrounds
+        </h1>
+        <p class="campgrounds-subtitle">
+            Discover beautiful places for your next outdoor adventure.
+        </p>
+    </section>
+
+   <div
+    id="map"
+    data-campgrounds="<%= JSON.stringify(
+        campgrounds.map(campground => ({
+            _id: campground._id,
+            title: campground.title,
+            description: campground.description,
+            geometry: campground.geometry
+        }))
+    ) %>"
+></div>
+    <section class="campground-section">
+        <h2 class="campground-section-title">
+            All Campgrounds
+        </h2>
+        <ol class="campground-list">
+        <% for(let campground of campgrounds){%>
+            <li class="campground-card">
+                <a class="campground-title" href="/campground/<%=campground._id%>">
+                    <%=campground.title%>
+                </a>
+                <% if(campground.images && campground.images.length > 0) { %>
+                    <img class="campground-image" src="<%=campground.images[0].thumbnail%>" alt="<%=campground.title%>">
+                <% } %>
+                <div class="campground-rating">
+                    <span>Average Rating:</span>
+                    <% for(let n = 1; n <= 5; n++) { %>
+                        <% if(n <= Math.floor(campground.averageRating)) { %>
+                            <span class="star">★</span>
+                        <% } else if(
+                            n === Math.ceil(campground.averageRating) &&
+                            campground.averageRating % 1 !== 0
+                        ) { %>
+                            <span class="star half-star">★</span>
+                        <% } else { %>
+                            <span class="star empty-star">☆</span>
+                        <% } %>
+                    <% } %>
+                </div>
+                <p class="campground-description">
+                    <%=campground.description%>
+                </p>
+                <div class="campground-details">
+                    <div>
+                        <strong>Location</strong>
+                        <span><%=campground.location%></span>
+                    </div>
+                    <div>
+                        <strong>Price</strong>
+                        <span>₹<%=campground.price%> / night</span>
+                    </div>
+                </div>
+                <% if(campground.reviews.length > 0) { %>
+                    <div class="campground-reviews">
+                        <h3>Reviews</h3>
+                        <% for(let review of campground.reviews) { %>
+                            <div class="review-item">
+                                <p>
+                                    <%=review.body%>
+                                </p>
+                                <div class="review-rating">
+                                    <% for(let n = 1; n <= 5; n++) { %>
+                                        <% if(n <= Math.floor(review.rating)) { %>
+                                            <span class="star">★</span>
+                                        <% } else if(
+                                            n === Math.ceil(review.rating) &&
+                                            review.rating % 1 !== 0
+                                        ) { %>
+                                            <span class="star half-star">★</span>
+                                        <% } else { %>
+                                            <span class="empty-star">☆</span>
+                                        <% } %>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                <% } %>
+                <a class="view-campground" href="/campground/<%=campground._id%>">
+                    View Campground
+                </a>
+            </li>
+        <% } %>
+        </ol>
+    </section>
+</main>
+
+    <%- include("../partials/footer")%>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+<script>
+    const CARTO_MAP_KEY = "<%= process.env.CARTO_MAP_KEY %>";
+</script>
+
+<script src="/javascript/index.js"></script>
+
+</body>
+</html>
