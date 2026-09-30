@@ -44,7 +44,7 @@ YelpCamp is a full-stack campground web application where users can discover cam
 
 ### Explore Campgrounds
 
-![Explore Campgrounds](screenshots/explorecampgrounds.png)
+![Explore Campgrounds](screenshots/explorecampground.png)
 
 ### Campground Details
 
